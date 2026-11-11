@@ -724,8 +724,8 @@ function newsArticle(a){
    Com os dois campos vazios, o site funciona em MODO DEMONSTRAÇÃO
    (salva só no aparelho de quem está lendo).
    ===================================================================== */
-const SUPABASE_URL='';   // ex.: 'https://abcdefghijkl.supabase.co'
-const SUPABASE_KEY='';   // ex.: 'sb_publishable_...' (ou a antiga 'anon', que começa com eyJ)
+const SUPABASE_URL='https://psbupzvmorlygkyeewxl.supabase.co';   // ex.: 'https://abcdefghijkl.supabase.co'
+const SUPABASE_KEY='sb_publishable_k6skVTr0DAO2LrTpOCCtEA_JVZ1JB_9';   // ex.: 'sb_publishable_...' (ou a antiga 'anon', que começa com eyJ)
 /* --------------------------------------------------------------------- */
 function readerKey(){let k=store.get('cc_reader_key','');if(!/^[0-9a-f-]{36}$/.test(k)){k=(crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));store.set('cc_reader_key',k)}return k}
 const SB=SUPABASE_URL&&SUPABASE_KEY?{
