@@ -773,6 +773,7 @@ html[data-a-motion] .rr-cu{animation:none}
 .rr-av.ph{border:0!important;box-shadow:none!important;outline:0}
 .rr-av.ph::after,.rr-av.ph::before{display:none!important}
 @media(max-width:560px){.tv-cat small{font-size:8.5px;letter-spacing:1.6px}.tv-nom.me{width:66px}.tv-sil{width:34px;height:44px;margin-left:-17px;border-radius:17px 17px 6px 6px}.tv-sil::before{width:20px;height:20px;margin-left:-10px;top:-16px}.tv-yr::before,.tv-yr::after{width:22px}.tv-ft span{font-size:11px}}
+.dlrow .dlb.off{opacity:.55}
 </style>
 </head>
 <body><div id="bgl" aria-hidden="true"></div>
@@ -882,6 +883,13 @@ function gameBox(){
  requestAnimationFrame(frame);return box}
 function reveal(){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});app.querySelectorAll('.card,.term,.chat,.surf .s,.tw').forEach(el=>{el.classList.add('rv');io.observe(el)})}
 function go(r){location.hash=r}
+/* links dos livros: confere se o arquivo existe no site (e aceita o nome com " (1)" que o celular às vezes cria) */
+const DLOK={};
+async function dlFind(f){if(f in DLOK)return DLOK[f];const dot=f.lastIndexOf('.'),b=f.slice(0,dot),x=f.slice(dot);
+ const C=[f,b+' (1)'+x,b+'(1)'+x,b+' (2)'+x,b.replace(/-/g,'_')+x,b.replace(/-/g,' ')+x,b.charAt(0).toUpperCase()+b.slice(1)+x];
+ for(const c of C){try{const r=await fetch(encodeURI(c),{method:'HEAD',cache:'no-store'});if(r.ok){return DLOK[f]=encodeURI(c)}}catch(e){}}return DLOK[f]=null}
+function dlCheck(a,n,f){if(!/^https?:$/.test(location.protocol))return;dlFind(f).then(u=>{if(!a.isConnected)return;if(u){a.href=u;a.classList.remove('off');a.onclick=null}
+ else{a.classList.add('off');a.setAttribute('aria-disabled','true');a.onclick=e=>{e.preventDefault();delete DLOK[f];dlFind(f).then(u2=>{if(u2){a.href=u2;a.classList.remove('off');a.removeAttribute('aria-disabled');a.onclick=null;if(n==='PDF'){const w=window.open(u2,'_blank');if(!w)location.href=u2}else location.href=u2}else toast('O '+n+' ainda não está disponível no site. Tente de novo mais tarde.')})}}})}
 function notesBox(title,bl){if(!bl||!bl.length)return null;const d=$('details','notes');d.appendChild($('summary','',title));bl.forEach(b=>{const p=$('p');p.style.whiteSpace='pre-line';putT(p,b[1]);d.appendChild(p)});return d}
 function home(){
  app.replaceChildren();
@@ -904,7 +912,7 @@ setTimeout(()=>{if(!v.isConnected)return;if(v.paused||v.currentTime<0.2){pl();se
  const b=$('button','cta',last?`Continuar: capítulo ${last}`:'Começar a ler');b.onclick=()=>go('cap-'+(last||1));c.appendChild(b);{const cl=$('button','clr','limpar histórico de leitura');cl.onclick=()=>clearHist(cl);c.appendChild(cl)}
  app.appendChild(c);
  const n=notesBox('Notas da autora',D.fnotes);if(n)app.appendChild(n);
- {const dl=$('div','dlrow');dl.appendChild($('span','','Baixar a fic completa'));[['EPUB','close-call.epub','para Kindle, Kobo e apps de leitura'],['PDF','close-call.pdf','para ler ou imprimir']].forEach(([n,f,ti])=>{const a=$('a','dlb');a.href=f;a.setAttribute('download',f);a.title=ti;a.append($('i','','↓'),document.createTextNode(n));dl.appendChild(a)});app.appendChild(dl)}
+ {const dl=$('div','dlrow');dl.appendChild($('span','','Baixar a fic completa'));[['EPUB','close-call.epub','para Kindle, Kobo e apps de leitura'],['PDF','close-call.pdf','para ler ou imprimir']].forEach(([n,f,ti])=>{const a=$('a','dlb');a.href=f;if(n==='EPUB')a.setAttribute('download',f);else{a.target='_blank';a.rel='noopener'}a.title=ti;a.append($('i','',n==='PDF'?'↗':'↓'),document.createTextNode(n));dl.appendChild(a);dlCheck(a,n,f)});app.appendChild(dl)}
  app.appendChild($('h2','sec',`Capítulos (${D.chs.length})`));
  const q=$('input','search');q.placeholder='Ir para o capítulo… (número)';q.setAttribute('aria-label','Ir para o capítulo (digite o número)');q.inputMode='numeric';app.appendChild(q);
  const lg=$('div','legend');lg.appendChild(racket());lg.appendChild(document.createTextNode(' = conteúdo explícito'));app.appendChild(lg);const g=$('div','grid');D.chs.forEach(ch=>{const k=$('button','chip'+(read.includes(ch.n)?' read':''));k.dataset.n=ch.n;k.appendChild($('small','','Capítulo'));k.appendChild(document.createTextNode(ch.n));const lk=$('span','lk');lk.dataset.lk=ch.n;k.appendChild(lk);if(EXP.includes(ch.n)){const r=racket();r.setAttribute('class','rk chiprk');k.appendChild(r);k.title='Conteúdo explícito'}k.onclick=()=>go('cap-'+ch.n);g.appendChild(k)});app.appendChild(g);{const rc=$('section','card');rc.appendChild($('h2','','Último ranking da história'));rc.appendChild($('p','rks','WTA Live Ranking · 04/05/2027 · logo após a final de Madrid'));rc.appendChild($('div','rkc','#1 Lorena Ferette (BRA) - 9.510 (+1)\n#2 Eduarda Fragoso (BRA) - 9.205 (-1)\n#3 Celina Martins (POR) - 7.560\n#4 Camille Laurent (FRA) - 6.505\n#5 Chiara Mancini (ITA) - 6.110\n#6 Sarah Walker (GBR) - 5.150 (+1)\n#7 Emma Campbell (USA) - 4.730 (- 1)\n#8 Maggye Damatta (BRA) - 4.365 (+1)\n#9 Izabela Galicia (MEX) - 4.105 (+3)\n#10 Karolína Bouzková (CZE) - 3.950 (-2)'));app.appendChild(rc)}
