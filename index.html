@@ -857,7 +857,7 @@ html[data-theme="dark"]:not([data-a-hc]) body.bgxtra{--paper:#181d10;--card:#1f2
 .xr-line::before{content:"";position:absolute;left:0;right:0;top:50%;height:1.5px;background:linear-gradient(90deg,transparent,#b9c59a 20%,#b9c59a 80%,transparent)}
 .xr-line i{position:absolute;left:50%;top:0;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f2f8a0,#b7cc1f);border:2px solid #fff;box-shadow:0 0 0 1.5px #4a5e26}
 .xr-by{margin:0;font:italic 15px Georgia,serif;color:var(--mut);text-indent:0;text-align:center}
-.xr-by a{color:#c25e0e;text-decoration:none;font-weight:700}
+.xr-by a,.xr-by b{color:#c25e0e;text-decoration:none;font-weight:700}
 .xr .tools{margin-top:14px}
 .xr-note{position:relative;margin:18px auto 28px;max-width:580px;padding:20px 24px 12px 60px;border-radius:18px;background:var(--card);border:1px solid var(--bd)}
 .xr-note::before{content:"“";position:absolute;left:16px;top:4px;font:italic 700 66px/1 Georgia,serif;color:#e8761c}
@@ -1730,7 +1730,7 @@ function extraPage(n){const X=EXTRAS[n];if(!X)return chapter(n);
  const back=$('button','xr-back','← Capítulo '+n);back.type='button';back.onclick=()=>go('cap-'+n);rd.appendChild(back);
  const hero=$('header','xr-hero');hero.append($('span','xr-kick','Extra · Capítulo '+n),$('h1','',X.title));
  const ln=$('div','xr-line');ln.setAttribute('aria-hidden','true');ln.appendChild($('i'));hero.appendChild(ln);
- const by=$('p','xr-by','');by.append(document.createTextNode('um extra de '));const a=$('a','','folkshoni');a.href='https://x.com/folkshoni';a.target='_blank';a.rel='noopener';by.appendChild(a);hero.appendChild(by);rd.appendChild(hero);
+ const by=$('p','xr-by','');by.append(document.createTextNode('close call '));const a=$('a','','folkshoni');a.href='https://x.com/folkshoni';a.target='_blank';a.rel='noopener';by.appendChild(a);hero.appendChild(by);rd.appendChild(hero);
  const tl=$('div','tools');[['A−','Diminuir o texto',()=>setFs(-1)],['A+','Aumentar o texto',()=>setFs(1)],['🌙 Tema','Alternar entre tema claro e escuro',toggleTheme]].concat(ttsOk()?[['🔊 Ouvir','Ouvir o extra em voz alta',()=>ttsToggle()]]:[]).forEach(([t,l,f])=>{const b=$('button','',t);b.type='button';b.setAttribute('aria-label',l);b.title=l;b.onclick=f;tl.appendChild(b)});tl.setAttribute('role','toolbar');tl.setAttribute('aria-label','Ferramentas de leitura');rd.appendChild(tl);
  if(X.note&&X.note.length){const nt=$('aside','xr-note');nt.setAttribute('aria-label','Nota da autora');nt.appendChild($('span','xr-nl','Nota da autora'));X.note.forEach(t=>nt.appendChild($('p','',t)));rd.appendChild(nt)}
  const st=$('div','story');X.body.forEach((t,i)=>{const p=$('p','',t);p.dataset.pi=i;st.appendChild(p)});rd.appendChild(st);
