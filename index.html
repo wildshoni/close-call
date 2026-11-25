@@ -987,7 +987,7 @@ function go(r){location.hash=r}
 /* links dos livros: confere se o arquivo existe no site (e aceita o nome com " (1)" que o celular às vezes cria) */
 const DLOK={};
 async function dlFind(f){if(f in DLOK)return DLOK[f];const dot=f.lastIndexOf('.'),b=f.slice(0,dot),x=f.slice(dot);
- const C=[f,b+' (1)'+x,b+'(1)'+x,b+' (2)'+x,b.replace(/-/g,'_')+x,b.replace(/-/g,' ')+x,b.charAt(0).toUpperCase()+b.slice(1)+x];
+ const C=[f,f+x,b+' (1)'+x,b+'(1)'+x,b+' (2)'+x,b.replace(/-/g,'_')+x,b.replace(/-/g,' ')+x,b.charAt(0).toUpperCase()+b.slice(1)+x];
  for(const c of C){try{const r=await fetch(encodeURI(c),{method:'HEAD',cache:'no-store'});if(r.ok){return DLOK[f]=encodeURI(c)}}catch(e){}}return DLOK[f]=null}
 function dlCheck(a,n,f){if(!/^https?:$/.test(location.protocol))return;dlFind(f).then(u=>{if(!a.isConnected)return;if(u){a.href=u;a.classList.remove('off');a.onclick=null}
  else{a.classList.add('off');a.setAttribute('aria-disabled','true');a.onclick=e=>{e.preventDefault();delete DLOK[f];dlFind(f).then(u2=>{if(u2){a.href=u2;a.classList.remove('off');a.removeAttribute('aria-disabled');a.onclick=null;if(n==='PDF'){const w=window.open(u2,'_blank');if(!w)location.href=u2}else location.href=u2}else toast('O '+n+' ainda não está disponível no site. Tente de novo mais tarde.')})}}})}
